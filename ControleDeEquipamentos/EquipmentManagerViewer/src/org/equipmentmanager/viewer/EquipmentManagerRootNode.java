@@ -49,9 +49,9 @@ import javax.swing.Action;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 
-public class BrandRootNode extends AbstractNode {
+public class EquipmentManagerRootNode extends AbstractNode {
 
-    public BrandRootNode(Children kids) {
+    public EquipmentManagerRootNode(Children kids) {
         super(kids);
         setDisplayName("Root");
     }
