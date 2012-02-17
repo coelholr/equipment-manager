@@ -99,7 +99,7 @@ public class BrandChildFactory extends ChildFactory<Brand> {
             public void destroy() throws IOException {
                 if (deleteBrand(this.getLookup().lookup(Brand.class).getId())) {
                     super.destroy();
-                    BrandTopComponent.refreshNode();
+                    EquipmentManagerTopComponent.refreshNode();
                 }
             }
 

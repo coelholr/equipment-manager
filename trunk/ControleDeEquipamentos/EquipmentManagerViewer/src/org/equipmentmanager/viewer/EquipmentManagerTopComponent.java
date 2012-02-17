@@ -63,16 +63,16 @@ import org.openide.windows.WindowManager;
 /**
  * Top component which displays something.
  */
-public final class BrandTopComponent extends TopComponent implements ExplorerManager.Provider {
+public final class EquipmentManagerTopComponent extends TopComponent implements ExplorerManager.Provider {
 
-    private static BrandTopComponent instance;
-    private static final String PREFERRED_ID = "BrandTopComponent";
+    private static EquipmentManagerTopComponent instance;
+    private static final String PREFERRED_ID = "EquipmentManagerTopComponent";
     private static ExplorerManager em = new ExplorerManager();
 
-    public BrandTopComponent() {
+    public EquipmentManagerTopComponent() {
         initComponents();
-        setName(NbBundle.getMessage(BrandTopComponent.class, "CTL_BrandTopComponent"));
-        setToolTipText(NbBundle.getMessage(BrandTopComponent.class, "HINT_BrandTopComponent"));
+        setName(NbBundle.getMessage(EquipmentManagerTopComponent.class, "CTL_EquipmentManagerTopComponent"));
+        setToolTipText(NbBundle.getMessage(EquipmentManagerTopComponent.class, "HINT_EquipmentManagerTopComponent"));
         ActionMap map = this.getActionMap();
         map.put("delete", ExplorerUtils.actionDelete(em, true)); //NOI18N
         associateLookup(ExplorerUtils.createLookup(em, map));
@@ -140,28 +140,28 @@ public final class BrandTopComponent extends TopComponent implements ExplorerMan
      * only, i.e. deserialization routines; otherwise you could get a
      * non-deserialized instance. To obtain the singleton instance, use {@link #findInstance}.
      */
-    public static synchronized BrandTopComponent getDefault() {
+    public static synchronized EquipmentManagerTopComponent getDefault() {
         if (instance == null) {
-            instance = new BrandTopComponent();
+            instance = new EquipmentManagerTopComponent();
         }
         return instance;
     }
 
     /**
-     * Obtain the BrandTopComponent instance. Never call {@link #getDefault}
+     * Obtain the EquipmentManagerTopComponent instance. Never call {@link #getDefault}
      * directly!
      */
-    public static synchronized BrandTopComponent findInstance() {
+    public static synchronized EquipmentManagerTopComponent findInstance() {
         TopComponent win = WindowManager.getDefault().findTopComponent(PREFERRED_ID);
         if (win == null) {
-            Logger.getLogger(BrandTopComponent.class.getName()).warning(
+            Logger.getLogger(EquipmentManagerTopComponent.class.getName()).warning(
                     "Cannot find " + PREFERRED_ID + " component. It will not be located properly in the window system.");
             return getDefault();
         }
-        if (win instanceof BrandTopComponent) {
-            return (BrandTopComponent) win;
+        if (win instanceof EquipmentManagerTopComponent) {
+            return (EquipmentManagerTopComponent) win;
         }
-        Logger.getLogger(BrandTopComponent.class.getName()).warning(
+        Logger.getLogger(EquipmentManagerTopComponent.class.getName()).warning(
                 "There seem to be multiple components with the '" + PREFERRED_ID
                 + "' ID. That is a potential source of errors and unexpected behavior.");
         return getDefault();

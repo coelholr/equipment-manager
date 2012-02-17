@@ -7,6 +7,6 @@ and open the template in the editor.
 <settings version="1.0">
     <module name="org.equipmentmanager.viewer" spec="1.0"/>
     <instanceof class="org.openide.windows.TopComponent"/>
-    <instanceof class="org.equipmentmanager.viewer.BrandTopComponent"/>
-    <instance class="org.equipmentmanager.viewer.BrandTopComponent" method="getDefault"/>
+    <instanceof class="org.equipmentmanager.viewer.EquipmentManagerTopComponent"/>
+    <instance class="org.equipmentmanager.viewer.EquipmentManagerTopComponent" method="getDefault"/>
 </settings>
