@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.equipmentmanager.library
+OpenIDE-Module-Localizing-Bundle: org/equipmentmanager/library/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
