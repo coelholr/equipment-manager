@@ -52,6 +52,9 @@ import javax.persistence.Query;
 import javax.swing.ActionMap;
 import javax.swing.SwingUtilities;
 import org.equipmentmanager.persistence.Brand;
+import org.netbeans.api.settings.ConvertAsProperties;
+import org.openide.awt.ActionID;
+import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.Children;
@@ -63,6 +66,23 @@ import org.openide.windows.WindowManager;
 /**
  * Top component which displays something.
  */
+@ConvertAsProperties(dtd = "-//org.equipmentmanager.viewer//EquipmentManagerViewer//EN",
+autostore = false)
+@TopComponent.Description(preferredID = "EquipmentManagerTopComponent",
+//iconBase="SET/PATH/TO/ICON/HERE", 
+persistenceType = TopComponent.PERSISTENCE_ALWAYS)
+@TopComponent.Registration(mode = "explorer", openAtStartup = true)
+@ActionID(category = "Window", id = "org.myorg.myviewer.MyViewerTopComponent")
+@ActionReference(path = "Menu/Window" /*
+ * , position = 333
+ */)
+@TopComponent.OpenActionRegistration(displayName = "#CTL_EquipmentManagerAction",
+preferredID = "EquipmentManagerTopComponent")
+@NbBundle.Messages({
+    "CTL_EquipmentManagerAction=Open Editor",
+    "CTL_EquipmentManagerTopComponent=Equipment Manager Window",
+    "HINT_EquipmentManagerTopComponent=This is a Equipment Manager window"
+})
 public final class EquipmentManagerTopComponent extends TopComponent implements ExplorerManager.Provider {
 
     private static EquipmentManagerTopComponent instance;
@@ -71,43 +91,46 @@ public final class EquipmentManagerTopComponent extends TopComponent implements 
 
     public EquipmentManagerTopComponent() {
         initComponents();
+        beanTreeView1.setRootVisible(false);
         setName(NbBundle.getMessage(EquipmentManagerTopComponent.class, "CTL_EquipmentManagerTopComponent"));
         setToolTipText(NbBundle.getMessage(EquipmentManagerTopComponent.class, "HINT_EquipmentManagerTopComponent"));
         ActionMap map = this.getActionMap();
-        map.put("delete", ExplorerUtils.actionDelete(em, true)); //NOI18N
+//        map.put("delete", ExplorerUtils.actionDelete(em, true)); //NOI18N
         associateLookup(ExplorerUtils.createLookup(em, map));
         RequestProcessor.getDefault().post(new Runnable() {
-
             @Override
             public void run() {
-                readBrand();
+                readEquipmentManagerRoot();
             }
         });
     }
 
-    private void readBrand() {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("EquipmentManagerDBAccessPU");
-        if (factory == null) {
-            // XXX: message box?
-            return;
-        }
-        EntityManager entityManager;
-        try {
-            entityManager = factory.createEntityManager();
-        } catch (RuntimeException re) {
-            // XXX: message box?
-            return;
-        }
-        final Query query = entityManager.createQuery("SELECT b FROM Brand b");
-        SwingUtilities.invokeLater(new Runnable() {
+    private void readEquipmentManagerRoot() {
+        /*        EntityManagerFactory factory = Persistence.createEntityManagerFactory("EquipmentManagerDBAccessPU");
+         if (factory == null) {
+         // XXX: message box?
+         return;
+         }
+         EntityManager entityManager;
+         try {
+         entityManager = factory.createEntityManager();
+         } catch (RuntimeException re) {
+         // XXX: message box?
+         return;
+         }
+         final Query query = entityManager.createQuery("SELECT b FROM Brand b");
+         SwingUtilities.invokeLater(new Runnable() {
 
-            @Override
-            public void run() {
-                @SuppressWarnings("unchecked")
-                List<Brand> resultList = query.getResultList();
-                em.setRootContext(new BrandRootNode(Children.create(new BrandChildFactory(resultList), true)));
-            }
-        });
+         @Override
+         public void run() {
+         @SuppressWarnings("unchecked")
+         List<Brand> resultList = query.getResultList();
+         em.setRootContext(new BrandRootNode(Children.create(new BrandChildFactory(resultList), true)));
+         }
+         });
+         */
+
+        em.setRootContext(new EquipmentRootNode(Children.create(new EquipmentManagerChildFactory(), true)));
     }
 
     /**
@@ -138,7 +161,8 @@ public final class EquipmentManagerTopComponent extends TopComponent implements 
     /**
      * Gets default instance. Do not use directly: reserved for *.settings files
      * only, i.e. deserialization routines; otherwise you could get a
-     * non-deserialized instance. To obtain the singleton instance, use {@link #findInstance}.
+     * non-deserialized instance. To obtain the singleton instance, use
+     * {@link #findInstance}.
      */
     public static synchronized EquipmentManagerTopComponent getDefault() {
         if (instance == null) {
@@ -148,8 +172,8 @@ public final class EquipmentManagerTopComponent extends TopComponent implements 
     }
 
     /**
-     * Obtain the EquipmentManagerTopComponent instance. Never call {@link #getDefault}
-     * directly!
+     * Obtain the EquipmentManagerTopComponent instance. Never call
+     * {@link #getDefault} directly!
      */
     public static synchronized EquipmentManagerTopComponent findInstance() {
         TopComponent win = WindowManager.getDefault().findTopComponent(PREFERRED_ID);
@@ -165,11 +189,6 @@ public final class EquipmentManagerTopComponent extends TopComponent implements 
                 "There seem to be multiple components with the '" + PREFERRED_ID
                 + "' ID. That is a potential source of errors and unexpected behavior.");
         return getDefault();
-    }
-
-    @Override
-    public int getPersistenceType() {
-        return TopComponent.PERSISTENCE_ALWAYS;
     }
 
     @Override
@@ -200,11 +219,6 @@ public final class EquipmentManagerTopComponent extends TopComponent implements 
     private void readPropertiesImpl(java.util.Properties p) {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
-    }
-
-    @Override
-    protected String preferredID() {
-        return PREFERRED_ID;
     }
 
     @Override
