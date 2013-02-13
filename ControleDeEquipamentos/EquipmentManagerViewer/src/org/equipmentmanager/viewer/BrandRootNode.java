@@ -53,7 +53,7 @@ public class BrandRootNode extends AbstractNode {
 
     public BrandRootNode(Children kids) {
         super(kids);
-        setDisplayName("Root");
+        setDisplayName("Brand");
     }
 
     @Override

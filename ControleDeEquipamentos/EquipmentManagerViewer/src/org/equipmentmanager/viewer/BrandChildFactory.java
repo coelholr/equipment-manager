@@ -70,8 +70,8 @@ public class BrandChildFactory extends ChildFactory<Brand> {
 
     @Override
     protected boolean createKeys(List<Brand> list) {
-        for (Brand Brand : resultList) {
-            list.add(Brand);
+        for (Brand b : resultList) {
+            list.add(b);
         }
         return true;
     }

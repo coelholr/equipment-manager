@@ -43,36 +43,52 @@
  */
 package org.equipmentmanager.viewer;
 
-import java.awt.event.ActionEvent;
-import javax.swing.AbstractAction;
+import java.util.List;
 import javax.swing.Action;
+import org.openide.actions.PropertiesAction;
 import org.openide.nodes.AbstractNode;
+import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Children;
+import org.openide.nodes.Node;
+import org.openide.util.actions.SystemAction;
+import org.openide.util.lookup.Lookups;
 
-public class EquipmentManagerRootNode extends AbstractNode {
+public class EquipmentManagerChildFactory extends ChildFactory<AbstractNode> {
 
-    public EquipmentManagerRootNode(Children kids) {
-        super(kids);
-        setDisplayName("Root");
+    private List<AbstractNode> resultList;
+
+    public EquipmentManagerChildFactory() {
+    }
+
+    public EquipmentManagerChildFactory(List<AbstractNode> resultList) {
+        this.resultList = resultList;
     }
 
     @Override
-    public Action[] getActions(boolean context) {
-        Action[] result = new Action[]{
-            new RefreshAction()
+    protected boolean createKeys(List<AbstractNode> list) {
+        for (AbstractNode an : resultList) {
+            list.add(an);
+        }
+        return true;
+    }
+
+    @Override
+    protected Node createNodeForKey(AbstractNode an) {
+        Node node = new AbstractNode(Children.LEAF, Lookups.singleton(an)) {
+
+            @Override
+            public Action[] getActions(boolean context) {
+                Action[] result = new Action[]{
+                    SystemAction.get(PropertiesAction.class)
+                };
+                return result;
+            }
+
+
         };
-        return result;
+/*        node.setDisplayName(emcf.getId().toString());
+        node.setShortDescription(emcf.getName());
+*/        return node;
     }
 
-    private final class RefreshAction extends AbstractAction {
-
-        public RefreshAction() {
-            putValue(Action.NAME, "Refresh");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            EquipmentManagerTopComponent.refreshNode();
-        }
-    }
 }
